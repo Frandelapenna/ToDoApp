@@ -7,18 +7,24 @@ def create_app():
     app = Flask(__name__)
     
     app.config.from_mapping(
-        SECERT_KEY='mikey',
+        SECERT_KEY='mi_key',
         DATABASE_HOST=os.environ.get('FLASK_DATABASE_HOST'),
         DATABASE_PASSWORD=os.environ.get('FLASK_DATABASE_PASSWORD'),
         DATABASE_USER=os.environ.get('FLASK_DATABASE_USER'),
-        DATABASE=os.environ.get('FLASK_DATABASE'),
+        DATABASE=os.environ.get('FLASK_DATABASE')
     )
 
-    from .import db
+    from . import db
+    
     db.init_app(app)
+
+    from . import auth
+    from . import todo
+
+    app.register_blueprint(todo.bp)
+    app.register_blueprint(auth.bp)
     
     @app.route('/hola')
-    
     def hola():
         return 'Chanchito feliz'
     
